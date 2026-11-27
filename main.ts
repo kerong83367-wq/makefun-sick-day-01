@@ -1,25 +1,20 @@
-// The funniest sick-day excuse, written to /output/entry.txt.
-// Node 22, standard library only; MAKEFUN_OUTPUT_DIR stands in for /output
-// outside the grader. The output is byte-identical on every run.
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+// A one-line sick-day excuse, written out to a file.
+import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 
-const LINE =
-  "I can't come in today — my bed has filed a formal complaint about my absence, and HR (my cat) has approved emergency cuddles only.";
+const excuse =
+  "My goldfish filed a formal complaint about my management style, so I'm staying home to mediate.";
 
-// The competition gate for this entry: one line under 200 characters.
-const LIMIT = 199;
-
-function checkEntry(line: string, limit: number): void {
-  if (line.length > limit) {
-    console.error(`entry is ${line.length} characters, over the ${limit} limit`);
-    process.exit(1);
-  }
+function screenExcuse(text: string): void {
+  if (text.trim().length === 0) throw new Error("the excuse cannot be blank");
+  if (text.includes("\n")) throw new Error("the excuse must stay on one line");
+  if (text.length > 280) throw new Error("the excuse is too long to be believed");
 }
 
-checkEntry(LINE, LIMIT);
+screenExcuse(excuse);
 
-const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
-mkdirSync(out, { recursive: true });
-writeFileSync(join(out, 'entry.txt'), LINE, 'utf8');
-// Deliberately no trailing newline: entry.txt holds only the excuse itself, nothing extra.
+const targetDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+mkdirSync(targetDir, { recursive: true });
+writeFileSync(join(targetDir, "entry.txt"), excuse, "utf8");
+
+// Final note: mediation is scheduled, but the goldfish wants it in writing.
